@@ -1,0 +1,61 @@
+﻿@model List<Order>
+
+@{
+	ViewBag.Title = "Orders";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Order #</th>
+			<th>Customer</th>
+			<th>Total Cost</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Order order in Model) {
+			<tr>
+				<td>
+					@if (order.Lines != null && order.Lines.Count > 0) {
+						<a href="@Url.Action("Index", new {id = ""})"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+					} else {
+						<a href="@Url.Action("Index", new {id = order.OrderId})"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+					}
+				</td>
+				<td>@order.OrderNumber</td>
+				<td>@order.CustomerName</td>
+				<td>@order.TotalCost.ToString("f")</td>
+			</tr>
+			if (order.Lines != null && order.Lines.Count > 0) {
+				<tr>
+					<td></td>
+					<td colspan="3" style="font-size: .8em">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Product</th>
+									<th>Quantity</th>
+									<th>Unit Price</th>
+									<th>Line Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (OrderLine orderLine in order.Lines) {
+									<tr>
+										<td>@orderLine.Product</td>
+										<td>@orderLine.Quantity</td>
+										<td>@orderLine.UnitPrice.ToString("f")</td>
+										<td>@orderLine.LineTotal.ToString("f")</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
